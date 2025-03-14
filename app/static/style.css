@@ -1,0 +1,117 @@
+/* Fondo y cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Centrado vertical */
+}
+
+/* Contenedor centrado */
+.container {
+    width: 100%;
+    max-width: 600px; /* Limitar el ancho */
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+/* Caja de chat */
+.chat-box {
+    height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fafafa;
+}
+
+/* Estilo de mensajes */
+.message {
+    padding: 8px 12px;
+    margin: 4px 0;
+    border-radius: 18px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.user {
+    background-color: #d0ebff;
+    color: #0056b3;
+    align-self: flex-end;
+    text-align: right;
+    margin-left: auto;
+}
+
+.bot {
+    background-color: #d3f9d8;
+    color: #2f6627;
+    align-self: flex-start;
+}
+
+/* Caja de entrada */
+.input-box {
+    display: flex;
+    margin-top: 10px;
+}
+
+/* Estilo del campo de texto */
+input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Estilo de los botones */
+button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Estilo para el botón del micrófono */
+#mic-button {
+    background-color: #f44336;
+}
+
+#mic-button:hover {
+    background-color: #e53935;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .container {
+        width: 95%; /* Para que se adapte mejor en móviles */
+    }
+}
+#mic-button {
+  background-color: #4CAF50; /* Color original, puedes ajustar */
+  border: none;
+  padding: 15px;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+#mic-button.recording {
+  background-color: red; /* Se vuelve rojo mientras graba */
+}

@@ -80,3 +80,9 @@ Diseñaremos una interfaz simple que muestre los resultados en consola o en una 
 ## 7. Conclusión
 
 Este proyecto combinará inteligencia artificial con reconocimiento de voz, facilitando la búsqueda de recetas de forma rápida y sencilla. Aplicaremos lo aprendido en IA y análisis de datos para resolver un problema cotidiano de manera práctica y eficiente.
+
+## 8. Instrucciones de uso
+
+- Clonar
+- Configurar .env con la clave de openai
+- Instalar requirements.txt
