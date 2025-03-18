@@ -1,5 +1,7 @@
 import os
 import string
+import os
+import requests
 import openai
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
@@ -119,10 +121,9 @@ def generar_receta(ingredientes):
         return respuesta.choices[0].message.content
     except Exception as e:
         return f"Error al generar receta: {str(e)}"
-import os
-import requests
 
-def descargar_imagenes(ingredientes, carpeta="imagenes_ingredientes"):
+
+def descargar_imagenes(ingredientes, carpeta="static/imagenes/ingredientes"):
     """Descarga imágenes de ingredientes y las guarda con su nombre.
 
     Args:
