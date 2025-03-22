@@ -14,4 +14,4 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 
 # Importar los routers para que se registren las rutas
-from app import routers
+from app import routes
