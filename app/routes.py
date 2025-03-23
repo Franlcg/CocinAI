@@ -22,6 +22,15 @@ def generar_receta(nombre, ingredientes):
 def index():
     return render_template('index.html')
 
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
+@app.route('/select-ingredients')
+def select_ingredients():
+    return render_template('select_ingredients.html')
+
+
 # Ruta ask para el envío de información (POST)
 @app.route('/ask', methods=['POST'])
 def ask():

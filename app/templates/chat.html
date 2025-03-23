@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Meta-datos y título -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot CocinAI</title>
+    <!-- Favicon y hojas de estilo -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='imagenes/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+
+<body>
+
+    <!-- Sección superior con nombre de usuario -->
+    <div id="user-header">
+        Bienvenido/a, <span id="username-display">Invitado</span>
+        <div class="decorative-line"></div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="main-container">
+
+        <!-- Chatbot -->
+        <div class="chat-container">
+            <div id="chat-box" class="chat-box"></div>
+            <div class="input-box">
+                <input id="message-input" type="text" placeholder="Escribe tu mensaje aquí...">
+                <button onclick="sendMessage()">Enviar</button>
+                <button id="mic-button" onclick="toggleSpeechRecognition()">🎤</button>
+            </div>
+        </div>
+
+        <!-- Sección de ingredientes y receta -->
+        <div class="recipe-container">
+            <div class="ingredients-section">
+                <h3>Ingredientes disponibles:</h3>
+                <div id="ingredients-list"></div>
+            </div>
+            <div class="result-section">
+                <h3>Receta sugerida:</h3>
+                <div id="recipe-result"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

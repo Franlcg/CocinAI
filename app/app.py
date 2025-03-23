@@ -1,6 +1,5 @@
 import os
 import string
-import os
 import requests
 import openai
 from bs4 import BeautifulSoup
@@ -98,7 +97,7 @@ def index():
         if seleccionados:
             receta = generar_receta(", ".join(seleccionados))
 
-    return render_template("index2.html", receta=receta, ingredientes=ingredientes)
+    return render_template("select_ingredients.html", receta=receta, ingredientes=ingredientes)
 
 
 # Función para generar receta con OpenAI

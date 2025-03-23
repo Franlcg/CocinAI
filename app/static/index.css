@@ -1,0 +1,97 @@
+/* =============================================== */
+/* Index nuevo
+/* =============================================== */
+
+/* ============================= */
+/* General */
+/* ============================= */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ============================= */
+/* Header */
+/* ============================= */
+header {
+    text-align: center;
+    margin-top: 40px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+/* ============================= */
+/* Container de opciones */
+/* ============================= */
+.options-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+/* ============================= */
+/* Tarjetas de opciones */
+/* ============================= */
+.option-card {
+    background-color: #ffffff;
+    width: 320px;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+}
+
+.option-card img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 16px;
+}
+
+.option-card h2 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.option-card p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* ============================= */
+/* Hover Effect */
+/* ============================= */
+.option-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* ============================= */
+/* Responsive Design */
+/* ============================= */
+@media (max-width: 768px) {
+    .options-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .option-card {
+        width: 90%;
+    }
+}
