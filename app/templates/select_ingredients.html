@@ -10,40 +10,59 @@
             flex-wrap: wrap;
             gap: 10px;
         }
+
         .ingrediente {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
         img {
             width: 100px;
             height: 100px;
             object-fit: cover;
             border-radius: 10px;
         }
+
+        .seleccionados {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>Recetas por imágenes</h1>
-    <form method="post">
-        <h2>Selecciona los ingredientes:</h2>
-        <div class="ingredientes-container">
-            {% for ing in ingredientes %}
-                <div class="ingrediente">
-                    <img src="{{ ing['imagen'] }}" alt="{{ ing['nombre'] }}">
-                    <label>
-                        <input type="checkbox" name="ingredientes" value="{{ ing['nombre'] }}">
-                        {{ ing['nombre'] }}
-                    </label>
-                </div>
-            {% endfor %}
+<h1>Recetas por imágenes</h1>
+<form method="post">
+    <div class="ingredientes-container">
+        {% for ing in ingredientes %}
+        <div class="ingrediente">
+            <img src="{{ ing['imagen'] }}" alt="{{ ing['nombre'] }}">
+            <label for="ingrediente-{{ loop.index }}">
+                {{ ing['nombre'] }}
+            </label>
+            <input type="checkbox" name="ingredientes" value="{{ ing['nombre'] }}"
+                   id="ingrediente-{{ loop.index }}">
         </div>
-        <button type="submit">Generar Receta</button>
-    </form>
+        {% endfor %}
+    </div>
 
-    {% if receta %}
-        <h2>Receta Generada:</h2>
-        <p>{{ receta }}</p>
-    {% endif %}
+    <div class="seleccionados">
+        <h2>Ingredientes Seleccionados:</h2>
+        <ul>
+            {% for ing in seleccionados %}
+            <li>{{ ing }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <button type="submit">Generar Receta</button>
+</form>
+
+
+{% if receta %}
+<div class="receta">
+    <h2>Receta Generada:</h2>
+    <p>{{ receta }}</p>
+</div>
+{% endif %}
 </body>
 </html>

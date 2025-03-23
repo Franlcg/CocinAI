@@ -1,7 +1,8 @@
 import os
 import string
-import requests
+
 import openai
+import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from flask import Flask, request, render_template
@@ -18,11 +19,46 @@ if openai.api_key is None:
 app = Flask(__name__)
 
 
+# Cargar ingredientes una sola vez al iniciar la aplicación
+
+@app.route("/", methods=["GET"])
+def home():
+    """
+    Renderiza la página principal.
+
+    Returns:
+        str: Página principal en formato HTML.
+    """
+    return render_template("index.html")
+
+
+@app.route("/select-ingredients", methods=["GET", "POST"])
+def select_ingredients():
+    """
+    Maneja la página de selección de ingredientes y generación de recetas.
+
+    Returns:
+        str: Página HTML con la lista de ingredientes y la receta generada (si aplica).
+    """
+    receta = None
+    seleccionados = []
+
+    # Si el usuario envía el formulario, generar receta con los ingredientes seleccionados
+    if request.method == "POST":
+        seleccionados = request.form.getlist("ingredientes")
+        if seleccionados:
+            receta = generar_receta(", ".join(seleccionados))
+
+    return render_template("select_ingredients.html", receta=receta, ingredientes=INGREDIENTES_CACHE,
+                           seleccionados=seleccionados)
+
+
 def extraer_ingredientes(url):
-    """Extrae una lista de ingredientes y sus imágenes desde la URL proporcionada.
+    """
+    Extrae una lista de ingredientes y sus imágenes desde la URL proporcionada.
 
     Args:
-        url (str): URL de la página web a extraer los ingredientes.
+        url (str): URL de la página web de donde se extraerán los ingredientes.
 
     Returns:
         dict: Diccionario con nombres de ingredientes como claves y URLs de imágenes como valores.
@@ -38,9 +74,9 @@ def extraer_ingredientes(url):
     ingredientes = {}
     soup = BeautifulSoup(response.text, 'html.parser')  # Usar response.text en lugar de response.content
 
+    # Buscar todos los enlaces con el atributo 'title' que contengan ingredientes
     for link in soup.find_all('a', title=True):
         nombre = link['title'].strip()
-
         # Si el nombre empieza con "Receta", se ignora
         if nombre.lower().startswith("receta"):
             continue
@@ -57,17 +93,16 @@ def extraer_ingredientes(url):
     return ingredientes
 
 
-
-# Almacenar todos los ingredientes
 def obtener_ingredientes_totales():
-    """Obtiene un conjunto de ingredientes desde varias páginas y los devuelve como una lista de diccionarios.
+    """
+    Obtiene un conjunto de ingredientes desde varias páginas y los devuelve como una lista de diccionarios.
 
     Returns:
         list: Lista de diccionarios con nombres de ingredientes y sus imágenes.
     """
     ingredientes_totales = {}
 
-    # Recorre las primeras 5 letras del alfabeto (A-E) para obtener ingredientes
+    # Recorre las primeras 5 letras del alfabeto para obtener ingredientes
     for letra in string.ascii_uppercase[:27]:  # Limitar a 5 letras para prueba
         base_url = f'https://www.recetas.com/ingredientes/{letra}/'
 
@@ -80,29 +115,9 @@ def obtener_ingredientes_totales():
     return [{"nombre": k, "imagen": v} for k, v in ingredientes_totales.items()]
 
 
-# Página principal
-@app.route("/", methods=["GET", "POST"])
-def index():
-    """Maneja la página principal donde se listan los ingredientes y se genera la receta.
-
-    Returns:
-        str: Renderiza la plantilla HTML con la lista de ingredientes y la receta generada.
-    """
-    ingredientes = obtener_ingredientes_totales()
-    receta = None
-
-    # Si el usuario envía el formulario, generar receta con los ingredientes seleccionados
-    if request.method == "POST":
-        seleccionados = request.form.getlist("ingredientes")
-        if seleccionados:
-            receta = generar_receta(", ".join(seleccionados))
-
-    return render_template("select_ingredients.html", receta=receta, ingredientes=ingredientes)
-
-
-# Función para generar receta con OpenAI
 def generar_receta(ingredientes):
-    """Genera una receta utilizando la API de OpenAI basándose en los ingredientes seleccionados.
+    """
+    Genera una receta utilizando la API de OpenAI basándose en los ingredientes seleccionados.
 
     Args:
         ingredientes (str): Lista de ingredientes seleccionados en formato de cadena.
@@ -112,7 +127,7 @@ def generar_receta(ingredientes):
     """
     prompt = f"Genera una receta con estos ingredientes: {ingredientes}."
     try:
-        client = openai.OpenAI()
+        client = openai.OpenAI()  # Se usa un cliente en la nueva API
         respuesta = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}]
@@ -154,12 +169,13 @@ def descargar_imagenes(ingredientes, carpeta="static/imagenes/ingredientes"):
             print(f" Error al descargar {nombre}: {e}")
 
 
+# Cargar los ingredientes al iniciar la aplicación para evitar múltiples solicitudes a la web
+INGREDIENTES_CACHE = obtener_ingredientes_totales()
 if __name__ == "__main__":
-#   Descarga Las imagenes
-#    ingredientes = obtener_ingredientes_totales()
-#    diccionario_ingredientes = {item["nombre"]: item["imagen"] for item in ingredientes}
-#    descargar_imagenes(diccionario_ingredientes)
+    #   Descarga Las imagenes
+    #    ingredientes = obtener_ingredientes_totales()
+    #    diccionario_ingredientes = {item["nombre"]: item["imagen"] for item in ingredientes}
+    #    descargar_imagenes(diccionario_ingredientes)
 
     # Inicia la aplicación Flask en modo depuración
     app.run(debug=True)
-
