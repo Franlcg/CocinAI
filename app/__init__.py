@@ -15,3 +15,4 @@ app = Flask(__name__)
 
 # Importar los routers para que se registren las rutas
 from app import routes
+from app import imagen

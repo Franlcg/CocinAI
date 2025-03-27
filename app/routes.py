@@ -12,23 +12,22 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 # Configuración de OpenAI API
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
 # Simulación de función de red neuronal para generar receta
 def generar_receta(nombre, ingredientes):
     receta = f"Hola {nombre}, con los ingredientes {', '.join(ingredientes)} puedes preparar una deliciosa sopa."
     return receta
+
 
 # Ruta página principal (get)
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
 @app.route('/chat')
 def chat():
     return render_template('chat.html')
-
-@app.route('/select-ingredients')
-def select_ingredients():
-    return render_template('select_ingredients.html')
 
 
 # Ruta ask para el envío de información (POST)
@@ -49,7 +48,7 @@ def ask():
     # Obtenemos de sesión el historial si estuviera
     history = session.get('history', [])
 
-    #Si se inicia la conversación, borramos sesión y añadimos este prompt al  historial
+    # Si se inicia la conversación, borramos sesión y añadimos este prompt al  historial
     if iniciar_conversacion:
         session.clear()
         session['history'] = [
@@ -87,7 +86,8 @@ def ask():
             if datos_nombre.get('nombre_detectado'):
                 user_name = datos_nombre['nombre']
                 session['user_name'] = user_name
-                return jsonify({'reply': f"¡Encantado {user_name}! ¿Qué ingredientes tienes disponibles?", 'name': user_name})
+                return jsonify(
+                    {'reply': f"¡Encantado {user_name}! ¿Qué ingredientes tienes disponibles?", 'name': user_name})
 
         except Exception as e:
             traceback.print_exc()
@@ -162,6 +162,7 @@ def ask():
         traceback.print_exc()
         return jsonify({'reply': "Hubo un error detectando ingredientes. Intenta nuevamente."}), 500
 
+
 # Ruta para enviar por voz (POST)
 @app.route('/voice', methods=['POST'])
 def voice():
@@ -188,4 +189,3 @@ def voice():
         return jsonify({'error': 'Error en la transcripción'}), 500
 
     return jsonify({'transcription': user_message})
-

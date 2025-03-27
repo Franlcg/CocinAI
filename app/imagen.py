@@ -5,52 +5,19 @@ import openai
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, Blueprint
+from app import app
 
-# Cargar variables de entorno desde el archivo .env
 load_dotenv()
+# Crear el blueprint de imagen
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Verificar si la clave de API se ha cargado correctamente
 if openai.api_key is None:
     raise ValueError("No se pudo cargar la clave de API de OpenAI. Verifica tu archivo .env.")
 
-# Crear aplicación Flask
-app = Flask(__name__)
-
 
 # Cargar ingredientes una sola vez al iniciar la aplicación
-
-@app.route("/", methods=["GET"])
-def home():
-    """
-    Renderiza la página principal.
-
-    Returns:
-        str: Página principal en formato HTML.
-    """
-    return render_template("index.html")
-
-
-@app.route("/select-ingredients", methods=["GET", "POST"])
-def select_ingredients():
-    """
-    Maneja la página de selección de ingredientes y generación de recetas.
-
-    Returns:
-        str: Página HTML con la lista de ingredientes y la receta generada (si aplica).
-    """
-    receta = None
-    seleccionados = []
-
-    # Si el usuario envía el formulario, generar receta con los ingredientes seleccionados
-    if request.method == "POST":
-        seleccionados = request.form.getlist("ingredientes")
-        if seleccionados:
-            receta = generar_receta(", ".join(seleccionados))
-
-    return render_template("select_ingredients.html", receta=receta, ingredientes=INGREDIENTES_CACHE,
-                           seleccionados=seleccionados)
 
 
 def extraer_ingredientes(url):
@@ -171,6 +138,29 @@ def descargar_imagenes(ingredientes, carpeta="static/imagenes/ingredientes"):
 
 # Cargar los ingredientes al iniciar la aplicación para evitar múltiples solicitudes a la web
 INGREDIENTES_CACHE = obtener_ingredientes_totales()
+
+
+@app.route("/select-ingredients", methods=["GET", "POST"], )
+def select_ingredients():
+    """
+    Maneja la página de selección de ingredientes y generación de recetas.
+
+    Returns:
+        str: Página HTML con la lista de ingredientes y la receta generada (si aplica).
+    """
+    receta = None
+    seleccionados = []
+
+    # Si el usuario envía el formulario, generar receta con los ingredientes seleccionados
+    if request.method == "POST":
+        seleccionados = request.form.getlist("ingredientes")
+        if seleccionados:
+            receta = generar_receta(", ".join(seleccionados))
+
+    return render_template("select_ingredients.html", receta=receta, ingredientes=INGREDIENTES_CACHE,
+                           seleccionados=seleccionados)
+
+
 if __name__ == "__main__":
     #   Descarga Las imagenes
     #    ingredientes = obtener_ingredientes_totales()
