@@ -1,0 +1,116 @@
+{
+  "add_bos_token": false,
+  "add_prefix_space": false,
+  "added_tokens_decoder": {
+    "0": {
+      "content": "<|talk|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "1": {
+      "content": "<|ax1|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "2": {
+      "content": "<|ax2|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "3": {
+      "content": "<|ax3|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "4": {
+      "content": "<|ax4|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "5": {
+      "content": "<|ax5|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "6": {
+      "content": "<|ax6|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "7": {
+      "content": "<|ax7|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "8": {
+      "content": "<|ax8|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "9": {
+      "content": "<|ax9|>",
+      "lstrip": false,
+      "normalized": false,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    },
+    "50256": {
+      "content": "<|endoftext|>",
+      "lstrip": false,
+      "normalized": true,
+      "rstrip": false,
+      "single_word": false,
+      "special": true
+    }
+  },
+  "additional_special_tokens": [
+    "<|talk|>",
+    "<|ax1|>",
+    "<|ax2|>",
+    "<|ax3|>",
+    "<|ax4|>",
+    "<|ax5|>",
+    "<|ax6|>",
+    "<|ax7|>",
+    "<|ax8|>",
+    "<|ax9|>"
+  ],
+  "bos_token": "<|endoftext|>",
+  "clean_up_tokenization_spaces": false,
+  "eos_token": "<|endoftext|>",
+  "errors": "replace",
+  "extra_special_tokens": {},
+  "full_tokenizer_file": null,
+  "model_max_length": 1000000000000000019884624838656,
+  "pad_token": "<|endoftext|>",
+  "tokenizer_class": "GPT2Tokenizer",
+  "unk_token": "<|endoftext|>"
+}

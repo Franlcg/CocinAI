@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Recetas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .recipe-output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            white-space: pre-wrap; /* Mantener el formato del texto */
+            color: #333;
+        }
+        .recipe-output h3 {
+            margin-top: 0;
+            color: #444;
+        }
+        .recipe-output p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Generador de Recetas</h1>
+        <form method="POST">
+            <label for="ingredients">Ingresa los ingredientes (separados por comas):</label>
+            <textarea id="ingredients" name="ingredients" placeholder="Ejemplo: papas, sal, cebolla" required></textarea>
+            <button type="submit">Generar Receta</button>
+        </form>
+
+        {% if receta %}
+            <div class="recipe-output">
+                <h3>Receta Generada:</h3>
+                <p>{{ receta }}</p>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
