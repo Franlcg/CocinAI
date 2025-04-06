@@ -4,20 +4,18 @@ import string
 import openai
 import requests
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
 from flask import Flask, request, render_template, Blueprint
-from app import app
+from flask.cli import load_dotenv
 
 load_dotenv()
 # Crear el blueprint de imagen
+imagen_blueprint = Blueprint('imagen', __name__)
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Verificar si la clave de API se ha cargado correctamente
 if openai.api_key is None:
     raise ValueError("No se pudo cargar la clave de API de OpenAI. Verifica tu archivo .env.")
-
-
-# Cargar ingredientes una sola vez al iniciar la aplicación
 
 
 def extraer_ingredientes(url):
@@ -136,11 +134,7 @@ def descargar_imagenes(ingredientes, carpeta="static/imagenes/ingredientes"):
             print(f" Error al descargar {nombre}: {e}")
 
 
-# Cargar los ingredientes al iniciar la aplicación para evitar múltiples solicitudes a la web
-INGREDIENTES_CACHE = obtener_ingredientes_totales()
-
-
-@app.route("/select-ingredients", methods=["GET", "POST"], )
+@imagen_blueprint.route("/", methods=["GET", "POST"], )
 def select_ingredients():
     """
     Maneja la página de selección de ingredientes y generación de recetas.
@@ -157,15 +151,14 @@ def select_ingredients():
         if seleccionados:
             receta = generar_receta(", ".join(seleccionados))
 
-    return render_template("select_ingredients.html", receta=receta, ingredientes=INGREDIENTES_CACHE,
+    return render_template("select_ingredients.html", receta=receta, ingredientes=obtener_ingredientes_totales(),
                            seleccionados=seleccionados)
 
-
-if __name__ == "__main__":
-    #   Descarga Las imagenes
-    #    ingredientes = obtener_ingredientes_totales()
-    #    diccionario_ingredientes = {item["nombre"]: item["imagen"] for item in ingredientes}
-    #    descargar_imagenes(diccionario_ingredientes)
-
-    # Inicia la aplicación Flask en modo depuración
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     #   Descarga Las imagenes
+#     #    ingredientes = obtener_ingredientes_totales()
+#     #    diccionario_ingredientes = {item["nombre"]: item["imagen"] for item in ingredientes}
+#     #    descargar_imagenes(diccionario_ingredientes)
+#
+#     # Inicia la aplicación Flask en modo depuración
+#     app.run(debug=True)

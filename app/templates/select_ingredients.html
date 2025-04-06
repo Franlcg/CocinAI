@@ -40,7 +40,7 @@
                 {{ ing['nombre'] }}
             </label>
             <input type="checkbox" name="ingredientes" value="{{ ing['nombre'] }}"
-                   id="ingrediente-{{ loop.index }}">
+                   id="ingrediente-{{ loop.index }}"/>
         </div>
         {% endfor %}
     </div>
@@ -61,7 +61,7 @@
 {% if receta %}
 <div class="receta">
     <h2>Receta Generada:</h2>
-    <p>{{ receta }}</p>
+    <textarea wrap="hard" readonly>{{ receta }}</textarea>
 </div>
 {% endif %}
 </body>
