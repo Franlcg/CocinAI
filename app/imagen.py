@@ -1,10 +1,9 @@
 import os
-import string
 
 import openai
 import requests
 from bs4 import BeautifulSoup
-from flask import Flask, request, render_template, Blueprint
+from flask import request, render_template, Blueprint
 from flask.cli import load_dotenv
 
 load_dotenv()
@@ -31,7 +30,7 @@ def extraer_ingredientes(url):
     try:
         response = requests.get(url, timeout=5)
         response.raise_for_status()
-        response.encoding = response.apparent_encoding  # Asegurar la correcta detección de la codificación
+        response.encoding = "utf-8"  # Asegurar la correcta detección de la codificación
     except requests.RequestException as e:
         print(f"Error al acceder a la página {url}: {e}")
         return {}
@@ -60,24 +59,28 @@ def extraer_ingredientes(url):
 
 def obtener_ingredientes_totales():
     """
-    Obtiene un conjunto de ingredientes desde varias páginas y los devuelve como una lista de diccionarios.
+     Recolecta y ordena alfabéticamente ingredientes desde una página web.
 
     Returns:
-        list: Lista de diccionarios con nombres de ingredientes y sus imágenes.
+        list: Lista ordenada de diccionarios, cada uno con el nombre y la imagen de un ingrediente.
+
     """
     ingredientes_totales = {}
 
-    # Recorre las primeras 5 letras del alfabeto para obtener ingredientes
-    for letra in string.ascii_uppercase[:27]:  # Limitar a 5 letras para prueba
-        base_url = f'https://www.recetas.com/ingredientes/{letra}/'
+    base_url = f'https://www.recetas.com/ingredientes/'
 
-        # Extraer de las primeras 2 páginas de cada letra
-        for pagina in range(1, 3):
-            url = base_url if pagina == 1 else f'{base_url}{pagina}/'
-            ingredientes = extraer_ingredientes(url)
-            ingredientes_totales.update(ingredientes)
+    # Recorre las páginas
+    for pagina in range(0, 15):
+        url = base_url if pagina == 1 else f'{base_url}{pagina}/'
+        ingredientes = extraer_ingredientes(url)
+        ingredientes_totales.update(ingredientes)
 
-    return [{"nombre": k, "imagen": v} for k, v in ingredientes_totales.items()]
+    # Crea una lista de diccionarios ordenada alfabéticamente por el nombre
+    lista_ordenada = sorted(
+        [{"nombre": k, "imagen": v} for k, v in ingredientes_totales.items()],
+        key=lambda x: x["nombre"].lower()  # para ordenar sin distinguir mayúsculas/minúsculas
+    )
+    return lista_ordenada
 
 
 def generar_receta(ingredientes):
