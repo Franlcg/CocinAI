@@ -5,7 +5,7 @@ from transformers import GPT2Tokenizer, GPT2LMHeadModel
 
 gpt2_blueprint = Blueprint("gpt2", __name__)
 # Obtener la ruta del modelo
-model_path = os.getenv("ruta_gpt2")
+model_path = os.getenv("RUTA_GPT2")
 
 # Cargar modelo y tokenizador
 tokenizer = GPT2Tokenizer.from_pretrained(model_path, local_files_only=True)

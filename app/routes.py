@@ -15,8 +15,34 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Simulación de función de red neuronal para generar receta
 def generar_receta(nombre, ingredientes):
-    receta = f"Hola {nombre}, con los ingredientes {', '.join(ingredientes)} puedes preparar una deliciosa sopa."
-    return receta
+    try:
+        prompt = (
+            f"Hola, mi nombre es {nombre}. Tengo estos ingredientes: {', '.join(ingredientes)}.\n"
+            "Por favor, crea una receta detallada y en español que pueda preparar usando solo esos ingredientes. "
+            "Incluye un título, lista de pasos y sugerencias si faltan ingredientes comunes."
+        )
+
+        response = openai.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": (
+                    "Eres un chef experto que genera recetas en español basadas en los ingredientes disponibles del usuario. "
+                    "Sé claro, ordenado y amigable. Incluye título y pasos numerados."
+                )},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            max_tokens=600,
+            top_p=0.9
+        )
+
+        receta_generada = response.choices[0].message.content.strip()
+        return receta_generada
+
+    except Exception as e:
+        traceback.print_exc()
+        return "Hubo un error generando la receta con OpenAI."
+
 
 
 # Ruta página principal (get)
