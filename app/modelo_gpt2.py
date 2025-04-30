@@ -1,5 +1,5 @@
 import os
-
+import torch
 from flask import Blueprint, request, render_template
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
 
@@ -7,10 +7,12 @@ gpt2_blueprint = Blueprint("gpt2", __name__)
 # Obtener la ruta del modelo
 model_path = os.getenv("RUTA_GPT2")
 
+# Detectar si CUDA está disponible y establecer el dispositivo
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # Cargar modelo y tokenizador
 tokenizer = GPT2Tokenizer.from_pretrained(model_path, local_files_only=True)
-model = GPT2LMHeadModel.from_pretrained(model_path, local_files_only=True)
-
+model = GPT2LMHeadModel.from_pretrained(model_path, local_files_only=True).to(device)
 
 @gpt2_blueprint.route("/", methods=["GET", "POST"])
 def index():
@@ -37,6 +39,9 @@ def index():
                     truncation=True,
                     max_length=512
                 )
+
+                # Mover los tensores al mismo dispositivo que el modelo
+                inputs = {key: val.to(device) for key, val in inputs.items()}
 
                 outputs = model.generate(
                     input_ids=inputs["input_ids"],
