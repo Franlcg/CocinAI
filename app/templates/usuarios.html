@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Recetas</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        h2 {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Historial de Recetas por Usuario</h1>
+
+    {% for usuario in usuarios %}
+        <h2>{{ usuario.nombre }}</h2>
+        {% if usuario.historial %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Ingredientes</th>
+                        <th>Receta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entrada in usuario.historial %}
+                        <tr>
+                            <td>{{ entrada.fecha }}</td>
+                            <td>{{ entrada.ingredientes | join(', ') }}</td>
+                            <td><pre>{{ entrada.receta }}</pre></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p><em>No hay recetas guardadas.</em></p>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>

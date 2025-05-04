@@ -12,11 +12,19 @@
 
 <body>
 
-    <!-- Sección superior con nombre de usuario -->
-    <div id="user-header">
+<!-- Sección superior con nombre de usuario y enlace al historial -->
+<div id="user-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
         Bienvenido/a, <span id="username-display">Invitado</span>
-        <div class="decorative-line"></div>
     </div>
+    <div>
+        <a href="/usuarios" title="Ver historial de recetas" style="text-decoration: none; font-size: 1.2em;">
+            📋 Historial
+        </a>
+    </div>
+</div>
+<div class="decorative-line"></div>
+
 
     <!-- Contenedor principal -->
     <div class="main-container">

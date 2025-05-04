@@ -5,6 +5,13 @@ import traceback
 from flask import Flask, request, jsonify, render_template, session
 import openai
 from app import app
+from pymongo import MongoClient
+from datetime import datetime
+
+# Conecta a tu base de datos (ajusta la URI)
+client = MongoClient(os.getenv("MONGO_URI"))  # Usa tu URI real aquí
+db = client["cocinai"]
+usuarios_collection = db["usuarios"]
 
 # Clave secreta para sesiones
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
@@ -54,6 +61,11 @@ def index():
 @app.route('/chat')
 def chat():
     return render_template('chat.html')
+
+@app.route('/usuarios')
+def mostrar_usuarios():
+    usuarios = list(usuarios_collection.find({}))
+    return render_template('usuarios.html', usuarios=usuarios)
 
 
 # Ruta ask para el envío de información (POST)
@@ -133,17 +145,44 @@ def ask():
             ]
         )
         respuesta_finalizar = response_finalizar.choices[0].message.content.strip()
+
         datos_finalizar = json.loads(respuesta_finalizar)
 
         if datos_finalizar.get('finalizar'):
             receta = generar_receta(user_name, ingredientes)
-            session.clear()
+
+            try:
+                fecha_actual = datetime.now().isoformat()
+
+                usuarios_collection.update_one(
+                    {"nombre": user_name},
+                    {
+                        "$push": {
+                            "historial": {
+                                "ingredientes": ingredientes,
+                                "receta": receta,
+                                "fecha": fecha_actual
+                            }
+                        }
+                    },
+                    upsert=True
+                )
+
+            except Exception as mongo_error:
+                print("[ERROR] Fallo al guardar en MongoDB")
+                traceback.print_exc()
+
+            session.clear()  # limpiar sesión después de finalizar
             return jsonify({
                 'reply': receta,
                 'name': user_name,
                 'receta': receta,
                 'finalizado': True
-            })
+            })  # ✅ Esto evita que siga y caiga en el bloque de ingredientes
+
+
+
+
 
     except Exception as e:
         traceback.print_exc()
