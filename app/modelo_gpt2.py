@@ -34,25 +34,25 @@ def index():
             try:
                 inputs = tokenizer(
                     texto_entrada,
-                    return_tensors="pt",
-                    padding=True,
-                    truncation=True,
-                    max_length=512
+                    return_tensors="pt",    # Usamos tensores para PyTorch
+                    padding=True,           # Rellenamos si es necesario
+                    truncation=True,        # Cortamos si es muy largo
+                    max_length=512          # Límite de longitud de entrada
                 )
 
                 # Mover los tensores al mismo dispositivo que el modelo
                 inputs = {key: val.to(device) for key, val in inputs.items()}
 
                 outputs = model.generate(
-                    input_ids=inputs["input_ids"],
-                    attention_mask=inputs["attention_mask"],
-                    max_length=300,
-                    num_return_sequences=1,
-                    temperature=0.7,
-                    top_p=0.95,
-                    do_sample=True,
-                    pad_token_id=tokenizer.eos_token_id,
-                    repetition_penalty=1.2,
+                    input_ids=inputs["input_ids"],              # IDs de entrada del texto
+                    attention_mask=inputs["attention_mask"],    # Máscara que indica qué partes del texto son reales y cuáles son relleno
+                    max_length=300,                             # Máximo de palabras generadas
+                    num_return_sequences=1,                     # Solo una receta
+                    temperature=0.7,                            # Variedad en el texto 0.1 - 2.0
+                    top_p=0.95,                                 # Filtrado para creatividad 0.0 – 1.0
+                    do_sample=True,                             # Generación aleatoria
+                    pad_token_id=tokenizer.eos_token_id,        # ID para rellenar si falta espacio
+                    repetition_penalty=1.2,                     # Penaliza repeticiones 1.0 - 2.0
                 )
 
                 receta_generada = tokenizer.decode(outputs[0], skip_special_tokens=True)
