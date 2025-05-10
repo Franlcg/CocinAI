@@ -3,4 +3,4 @@ from app import app  # Se importa la instancia de la aplicación Flask desde la 
 
 if __name__ == '__main__':
     # Ejecuta la aplicación en modo debug (solo para desarrollo)
-    app.run(debug=False)
+    app.run(host='0.0.0.0', port=4000, debug=False)
