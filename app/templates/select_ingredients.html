@@ -3,18 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recetas por imágenes</title>
+    <title>Recetas por Imágenes</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='imagenes/favicon.ico') }}">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
         .ingredientes-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
         }
 
         .ingrediente {
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .ingrediente:hover {
+            transform: scale(1.05);
         }
 
         img {
@@ -22,15 +48,54 @@
             height: 100px;
             object-fit: cover;
             border-radius: 10px;
+            margin-bottom: 10px;
         }
 
         .seleccionados {
             margin-top: 20px;
+            background-color: #e7f3fe;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .seleccionados h2 {
+            margin: 0 0 10px;
+            color: #2196F3;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .receta {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .receta h2 {
+            margin: 0 0 10px;
+            color: #FF5722;
         }
     </style>
 </head>
 <body>
-<h1>Recetas por imágenes</h1>
+<h1>Recetas por Imágenes</h1>
 <form method="post">
     <div class="ingredientes-container">
         {% for ing in ingredientes %}
@@ -57,11 +122,10 @@
     <button type="submit">Generar Receta</button>
 </form>
 
-
 {% if receta %}
 <div class="receta">
     <h2>Receta Generada:</h2>
-    <textarea wrap="hard" readonly>{{ receta }}</textarea>
+    <p>{{ receta }}</p>
 </div>
 {% endif %}
 </body>
