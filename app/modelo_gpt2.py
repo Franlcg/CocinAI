@@ -14,8 +14,19 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 tokenizer = GPT2Tokenizer.from_pretrained(model_path, local_files_only=True)
 model = GPT2LMHeadModel.from_pretrained(model_path, local_files_only=True).to(device)
 
+
 @gpt2_blueprint.route("/", methods=["GET", "POST"])
 def index():
+    """
+    Maneja solicitudes GET y POST para generar recetas con GPT-2.
+
+    GET: Muestra el formulario para ingresar ingredientes.
+    POST: Genera una receta a partir de los ingredientes ingresados.
+
+    Returns:
+        str: HTML renderizado con la receta generada o mensaje de error.
+    """
+
     receta_generada = ""
     # Obtener tokenizer y modelo del objeto Flask actual
     # Recuperar el tokenizer y modelo cargados en la app Flask
